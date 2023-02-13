@@ -14,13 +14,14 @@
     <div id="slideShow">
       <div class="photoHolder">
         <img class="thumbnail" id="photo" src="http://placehold.it/518x389?text=Welcome+to+my+Gallery" alt="Gallery Image"/>
+        <img class="moreIndicator rot90" onclick="rotSwitcher()" src="img/more.png" alt="More Content" />
       </div>
-      <img class="moreIndicator rot90" src="img/more.png" alt="More Content"/>
+      
       <div id="nav">
         <img id="prevPhoto" class='rot180' src="img/arrow.png" alt="Previous Photo"/>
         <img id="nextPhoto" src="img/arrow.png" alt="Next Photo"/>
       </div>
-      <div class="details">
+      <div class="details" onclick="slider()">
         <p class="location">Location: </p>
         <p class="description">Description: </p>
         <p class="date">Date: </p>

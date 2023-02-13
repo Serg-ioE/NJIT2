@@ -31,13 +31,28 @@ function animate() {
 }
 
 /************* DO NOT TOUCH CODE ABOVE THIS LINE ***************/
-
 function swapPhoto() {
-	//Add code here to access the #slideShow element.
-	//Access the img element and replace its source
-	//with a new image from your images array which is loaded 
-	//from the JSON string
-	console.log('swap photo');
+	if (mCurrentIndex >= mImages.length){
+		mCurrentIndex = 0;
+	}
+	if (mCurrentIndex < 0){
+		mCurrentIndex = mImages.length;
+	}
+
+	document.getElementById('photo').src = mImages[mCurrentIndex].img;
+
+
+	var loc = document.getElementsByClassName('location');
+	loc[0].innerHTML = 'location: '+ mImages[mCurrentIndex].location;
+	
+	var des = document.getElementsByClassName('description');
+	des[0].innerHTML = 'description: '+ mImages[mCurrentIndex].description;
+
+	var dt = document.getElementsByClassName('date');
+	dt[0].innerHTML = 'date: '+ mImages[mCurrentIndex].date;
+
+	mLastFrameTime = 0
+	mCurrentIndex += 1
 }
 
 // Counter for the mImages array
@@ -54,7 +69,36 @@ var mJson;
 
 // URL for the JSON to load by default
 // Some options for you are: images.json, images.short.json; you will need to create your own extra.json later
-var mUrl = 'images.json';
+var mUrl = 'https://api.npoint.io/018407a7e31452e70f03';
+
+//Converts data from Json file into readable text
+function fetchJson() {
+	mRequest.onreadystatechange = function() {
+		console.log("on ready state change");
+		if (this.readyState == 4 && this.status == 200) {
+			mJson = JSON.parse(mRequest.responseText);
+			console.log("What");
+			iterateJSON(mJson);
+		}
+	}
+	mRequest.open("GET", mUrl, true);
+	mRequest.send();
+		
+}
+
+function iterateJSON(mJson) {
+
+	//Set that index of mImages equal to a new GalleryImage object Access the location attribute using dot notation and set it equal to mJson.images[x].imgLocation Repeat b for description, date, and img/imgPath
+	for (x = 0; x < mJson.images.length; x++) {
+		mImages[x] = new GalleryImage();
+		mImages[x].location = mJson.images[x].imgLocation;
+		mImages[x].description = mJson.images[x].description;
+		mImages[x].date = mJson.images[x].date;
+		mImages[x].img = mJson.images[x].imgPath;
+	
+		
+	}
+}
 
 
 //You can optionally use the following function as your event callback for loading the source of Images from your json data (for HTMLImageObject).
@@ -69,16 +113,16 @@ function makeGalleryImageOnloadCallback(galleryImage) {
 $(document).ready( function() {
 	
 	// This initially hides the photos' metadata information
-	$('.details').eq(0).hide();
-	
+	//$('.details').eq(0).hide();
+	fetchJson();
 });
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function() {	
 	
 	console.log('window loaded');
 
 }, false);
-
+//Assigning data from JSON list ot variables that will be used in our slideshow
 function GalleryImage() {
 	var location;
 	var description;
@@ -90,3 +134,29 @@ function GalleryImage() {
 	//3. the date when the photo was taken
 	//4. either a String (src URL) or an an HTMLImageObject (bitmap of the photo. https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement)
 }
+
+function rotSwitcher() {
+	if ($( ".moreIndicator" ).hasClass( "rot90" )){
+		$( ".moreIndicator" ).addClass( "rot270" );
+		$( ".moreIndicator" ).removeClass( "rot90" );
+		
+	}
+	else {
+		$( ".moreIndicator" ).addClass( "rot90" );
+		$( ".moreIndicator" ).removeClass( "rot270" );
+
+  
+	}
+	$( ".details" ).slideToggle( "slow" );
+}
+
+$("#nextPhoto").click(function() {
+  console.log( "Handler for .click() called." );
+  mCurrentIndex += 1;
+});
+
+$("#prevPhoto").click(
+	mCurrentIndex -= 1
+);
+
+
