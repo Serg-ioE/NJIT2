@@ -1,0 +1,34 @@
+{
+    "images": [
+        {
+            "imgPath": "img/Marvel Characters/doctorStrange.png",
+            "imgName": "Doctor Strange (Stephen Strange)",
+            "powers": "Master of the Mystic Arts and sorcery",
+            "occupation": "The Sorcerer Supreme: protects the earth from magical and mystical threats."
+        },
+        {
+            "imgPath": "img/Marvel Characters/galactus.png",
+            "imgName": "Galactus",
+            "powers": "Virtually immortal and has immense control of cosmic energy",
+            "occupation": "He mainly consumes planets to sustain his own life force."
+        },
+        {
+            "imgPath": "img/Marvel Characters/hulk.png",
+            "imgName": "The Hulk",
+            "powers": "Incredible superhuman strength, Regenerative healing, Durability, and size manipulation.",
+            "occupation": "Superhero and a member of the Avengers, but his alter ego, Bruce Banner, is a physicist and a scientist."
+        },
+        {
+            "imgPath": "img/Marvel Characters/ironMAN.png",
+            "imgName": "Iron Man",
+            "powers": "His suit gives him a variety of abilities such as flight, a computer interface, and superhuman strength.",
+            "occupation": "Genius, Billionaire, Playboy, Philanthropist"
+        },
+        {
+            "imgPath": "img/Marvel Characters/kang.png",
+            "imgName": "Kang the Conquerer",
+            "powers": "He is extremely intelligent, has high tech information, can time travel, and can make force fields and can manipulate energy.",
+            "occupation": "He is a time traveling conquerer who seeks to control all of time and space."
+        }
+  ]
+}

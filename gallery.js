@@ -32,6 +32,17 @@ function animate() {
 
 /************* DO NOT TOUCH CODE ABOVE THIS LINE ***************/
 function swapPhoto() {
+
+	if (swapWhich == 1){
+		mCurrentIndex += 1
+	} else if (swapWhich == 2) {
+		mCurrentIndex -= 1
+	} else if (swapWhich == 3){
+		mCurrentIndex += 1
+	}
+
+// ABOVE IN FUNCTION: turns on and off swapWhich to be able to swap the photo and simultaneously have a timer that swaps the photo.
+
 	if (mCurrentIndex >= mImages.length){
 		mCurrentIndex = 0;
 	}
@@ -42,17 +53,20 @@ function swapPhoto() {
 	document.getElementById('photo').src = mImages[mCurrentIndex].img;
 
 
-	var loc = document.getElementsByClassName('location');
-	loc[0].innerHTML = 'location: '+ mImages[mCurrentIndex].location;
+	var nam = document.getElementsByClassName('name');
+	nam[0].innerHTML = 'Name: '+ mImages[mCurrentIndex].name;
 	
-	var des = document.getElementsByClassName('description');
-	des[0].innerHTML = 'description: '+ mImages[mCurrentIndex].description;
+	var pwr = document.getElementsByClassName('powers');
+	pwr[0].innerHTML = 'Powers: '+ mImages[mCurrentIndex].powers;
 
-	var dt = document.getElementsByClassName('date');
-	dt[0].innerHTML = 'date: '+ mImages[mCurrentIndex].date;
+	var job = document.getElementsByClassName('occupation');
+	job[0].innerHTML = 'Occupation: '+ mImages[mCurrentIndex].occupation;
 
 	mLastFrameTime = 0
-	mCurrentIndex += 1
+
+	swapWhich = 3;
+
+	console.log('swapped.');
 }
 
 // Counter for the mImages array
@@ -64,12 +78,12 @@ var mRequest = new XMLHttpRequest();
 // Array holding GalleryImage objects (see below).
 var mImages = [];
 
-// Holds the retrived JSON information
+// Holds the retrieved JSON information
 var mJson;
 
 // URL for the JSON to load by default
 // Some options for you are: images.json, images.short.json; you will need to create your own extra.json later
-var mUrl = 'https://api.npoint.io/018407a7e31452e70f03';
+var mUrl = 'https://api.npoint.io/653347947d31070d42c6';
 
 //Converts data from Json file into readable text
 function fetchJson() {
@@ -77,7 +91,6 @@ function fetchJson() {
 		console.log("on ready state change");
 		if (this.readyState == 4 && this.status == 200) {
 			mJson = JSON.parse(mRequest.responseText);
-			console.log("What");
 			iterateJSON(mJson);
 		}
 	}
@@ -88,15 +101,13 @@ function fetchJson() {
 
 function iterateJSON(mJson) {
 
-	//Set that index of mImages equal to a new GalleryImage object Access the location attribute using dot notation and set it equal to mJson.images[x].imgLocation Repeat b for description, date, and img/imgPath
+	//Set that index of mImages equal to a new GalleryImage object Access the name attribute using dot notation and set it equal to mJson.images[x].imgName Repeat b for powers, occupation, and img/imgPath
 	for (x = 0; x < mJson.images.length; x++) {
 		mImages[x] = new GalleryImage();
-		mImages[x].location = mJson.images[x].imgLocation;
-		mImages[x].description = mJson.images[x].description;
-		mImages[x].date = mJson.images[x].date;
+		mImages[x].name = mJson.images[x].imgName;
+		mImages[x].powers = mJson.images[x].powers;
+		mImages[x].occupation = mJson.images[x].occupation;
 		mImages[x].img = mJson.images[x].imgPath;
-	
-		
 	}
 }
 
@@ -110,11 +121,40 @@ function makeGalleryImageOnloadCallback(galleryImage) {
 	}
 }
 
+var swapWhich;
+
 $(document).ready( function() {
+
+	$('#nextPhoto').position({
+		my: 'right bottom',
+		at: 'right bottom',
+		of: '#nav'
+	})
 	
-	// This initially hides the photos' metadata information
-	//$('.details').eq(0).hide();
+	const urlParams = new URLSearchParams(window.location.search)
+
+	for (const [key, value] of urlParams) {
+		console.log(`${key}:${Value}`)
+		mUrl = value
+	}
+
+	if (mUrl == undefined) {
+		mUrl = 'https://api.npoint.io/653347947d31070d42c6';
+	}
+	
 	fetchJson();
+
+	$("#nextPhoto").click(function () {
+		console.log('Fast forward')
+		swapWhich = 1
+		swapPhoto()
+    });
+
+	$("#prevPhoto").click(function () {
+		console.log('rewind')
+		swapWhich = 2
+		swapPhoto()
+    });
 });
 
 window.addEventListener('load', function() {	
@@ -124,14 +164,14 @@ window.addEventListener('load', function() {
 }, false);
 //Assigning data from JSON list ot variables that will be used in our slideshow
 function GalleryImage() {
-	var location;
-	var description;
-	var date;
+	var name;
+	var powers;
+	var occupation;
 	var img;
 	//implement me as an object to hold the following data about an image:
-	//1. location where photo was taken
-	//2. description of photo
-	//3. the date when the photo was taken
+	//1. name where photo was taken
+	//2. powers of person in photo
+	//3. what the person in the photo does for a living
 	//4. either a String (src URL) or an an HTMLImageObject (bitmap of the photo. https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement)
 }
 
@@ -150,13 +190,5 @@ function rotSwitcher() {
 	$( ".details" ).slideToggle( "slow" );
 }
 
-$("#nextPhoto").click(function() {
-  console.log( "Handler for .click() called." );
-  mCurrentIndex += 1;
-});
-
-$("#prevPhoto").click(
-	mCurrentIndex -= 1
-);
 
 
